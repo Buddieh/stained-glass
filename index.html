@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stained Glass Generator</title>
+    <meta name="description" content="Turn a photo or artwork into a 3D-printable stained glass panel. Preview it in 3D and download a multi-color 3MF or STLs. Runs entirely in your browser." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231b1b1d'/%3E%3Cpath d='M4 4h11v11H4z' fill='%23c8342c'/%3E%3Cpath d='M17 4h11v11H17z' fill='%23e5b22a'/%3E%3Cpath d='M4 17h11v11H4z' fill='%232b56b0'/%3E%3Cpath d='M17 17h11v11H17z' fill='%232d9646'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <div>
+          <h1>Stained Glass Generator</h1>
+          <p class="tag">Image in, printable stained glass panel out. Everything runs in your browser; your image is never uploaded.</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel" aria-label="Settings">
+        <section>
+          <h2>1. Image</h2>
+          <label class="drop" id="drop">
+            <input type="file" id="file" accept="image/png,image/jpeg,image/webp" />
+            <span id="dropText">Choose a PNG or JPG, or drop it here</span>
+          </label>
+          <button type="button" id="sample" class="link">Or try a sample image</button>
+        </section>
+
+        <section>
+          <h2>2. Size</h2>
+          <div class="row2">
+            <label>Width (mm)<input type="number" id="widthMm" min="20" max="1000" step="1" /></label>
+            <label>Height (mm)<input type="number" id="heightMm" min="20" max="1000" step="1" /></label>
+          </div>
+          <p class="hint" id="sizeHint">Drag on the image to crop. The aspect ratio follows the crop.</p>
+          <button type="button" id="resetCrop" class="secondary small">Reset crop</button>
+        </section>
+
+        <section>
+          <h2>3. Glass</h2>
+          <label class="slider">Colors <output id="colorsOut"></output><input type="range" id="colors" min="2" max="16" step="1" /></label>
+          <label class="slider">Smallest piece (mm²) <output id="minPieceOut"></output><input type="range" id="minPiece" min="2" max="80" step="1" /></label>
+          <label class="slider">Smoothing (mm) <output id="smoothOut"></output><input type="range" id="smooth" min="0.1" max="1.5" step="0.05" /></label>
+          <label>Detail
+            <select id="detail">
+              <option value="0.15">Fine (0.15 mm/px, slower)</option>
+              <option value="0.25">Normal (0.25 mm/px)</option>
+              <option value="0.4">Coarse (0.4 mm/px, fastest)</option>
+            </select>
+          </label>
+        </section>
+
+        <section>
+          <h2>4. Print</h2>
+          <label class="slider">Lead line width (mm) <output id="cameWOut"></output><input type="range" id="cameW" min="0.8" max="4" step="0.1" /></label>
+          <label class="slider">Lead line height (mm) <output id="cameHOut"></output><input type="range" id="cameH" min="0.8" max="5" step="0.1" /></label>
+          <label class="slider">Glass thickness (mm) <output id="paneTOut"></output><input type="range" id="paneT" min="0.2" max="2" step="0.1" /></label>
+          <label class="slider">Border (mm) <output id="borderOut"></output><input type="range" id="border" min="0" max="15" step="0.5" /></label>
+          <label class="check"><input type="checkbox" id="mirror" /> Mirror for face-down printing (recommended)</label>
+        </section>
+
+        <section>
+          <h2>5. Download</h2>
+          <div class="downloads">
+            <button type="button" id="dl3mf" class="primary" disabled>3MF (multi-color)</button>
+            <button type="button" id="dlStl" class="secondary" disabled>STLs (zip)</button>
+            <button type="button" id="dlSvg" class="secondary" disabled>SVG design</button>
+          </div>
+          <p class="hint">Glass sits in the first layers on the bed; that side is the front. Assign one filament per part in your slicer.</p>
+        </section>
+      </aside>
+
+      <section class="work">
+        <div class="views2d">
+          <figure class="card">
+            <figcaption>Crop</figcaption>
+            <div class="canvasWrap"><canvas id="srcCanvas" aria-label="Source image with crop box"></canvas>
+              <p class="empty" id="srcEmpty">No image yet</p></div>
+          </figure>
+          <figure class="card">
+            <figcaption>Design <span id="stats" class="muted"></span></figcaption>
+            <div class="canvasWrap"><canvas id="designCanvas" aria-label="2D stained glass design"></canvas>
+              <p class="empty" id="designEmpty">The design appears here</p></div>
+          </figure>
+        </div>
+
+        <figure class="card viewerCard">
+          <figcaption>
+            3D preview
+            <span class="toolbar">
+              <span class="seg" role="group" aria-label="Lighting">
+                <button type="button" id="modeBacklit" class="on">Backlit</button>
+                <button type="button" id="modeRoom">Room light</button>
+              </span>
+              <button type="button" id="flip" class="secondary small">Flip side</button>
+              <button type="button" id="resetView" class="secondary small">Reset view</button>
+            </span>
+          </figcaption>
+          <div id="viewer" class="viewer"><p class="status" id="status"></p></div>
+          <ul id="partList" class="parts" aria-label="Parts"></ul>
+        </figure>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <span>Translucent PETG recommended. Glass color on screen is only a guide; print a small test first.</span>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script src="https://buddieh.com/hub.js" defer></script>
+  </body>
+</html>
