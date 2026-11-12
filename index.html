@@ -13,7 +13,7 @@
         <span class="logo" aria-hidden="true"></span>
         <div>
           <h1>Stained Glass Generator</h1>
-          <p class="tag">Image in, printable stained glass panel out. Everything runs in your browser; your image is never uploaded.</p>
+          <p class="tag">Image in, printable stained glass panel out. <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Everything runs in your browser. Your image is never uploaded.">?</button></p>
         </div>
       </div>
     </header>
@@ -30,21 +30,21 @@
         </section>
 
         <section>
-          <h2>2. Size</h2>
+          <h2>2. Size <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Drag on the image to crop. The aspect ratio follows the crop.">?</button></h2>
           <div class="row2">
             <label>Width (mm)<input type="number" id="widthMm" min="20" max="1000" step="1" /></label>
             <label>Height (mm)<input type="number" id="heightMm" min="20" max="1000" step="1" /></label>
           </div>
-          <p class="hint" id="sizeHint">Drag on the image to crop. The aspect ratio follows the crop.</p>
+          <p class="hint" id="sizeHint"></p>
           <button type="button" id="resetCrop" class="secondary small">Reset crop</button>
         </section>
 
         <section>
           <h2>3. Glass</h2>
-          <label class="slider">Colors <output id="colorsOut"></output><input type="range" id="colors" min="2" max="16" step="1" /></label>
-          <label class="slider">Smallest piece (mm²) <output id="minPieceOut"></output><input type="range" id="minPiece" min="2" max="80" step="1" /></label>
-          <label class="slider">Smoothing (mm) <output id="smoothOut"></output><input type="range" id="smooth" min="0.1" max="1.5" step="0.05" /></label>
-          <label>Detail
+          <label class="slider">Colors <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="How many glass colors the image is reduced to.">?</button> <output id="colorsOut"></output><input type="range" id="colors" min="2" max="16" step="1" /></label>
+          <label class="slider">Smallest piece (mm²) <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Pieces smaller than this are merged into a neighbour.">?</button> <output id="minPieceOut"></output><input type="range" id="minPiece" min="2" max="80" step="1" /></label>
+          <label class="slider">Smoothing (mm) <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Higher values give smoother outlines with less detail.">?</button> <output id="smoothOut"></output><input type="range" id="smooth" min="0.1" max="1.5" step="0.05" /></label>
+          <label>Detail <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Working resolution. Finer keeps more detail but takes longer.">?</button>
             <select id="detail">
               <option value="0.15">Fine (0.15 mm/px, slower)</option>
               <option value="0.25">Normal (0.25 mm/px)</option>
@@ -56,20 +56,19 @@
         <section>
           <h2>4. Print</h2>
           <label class="slider">Lead line width (mm) <output id="cameWOut"></output><input type="range" id="cameW" min="0.8" max="4" step="0.1" /></label>
-          <label class="slider">Lead line height (mm) <output id="cameHOut"></output><input type="range" id="cameH" min="0.8" max="5" step="0.1" /></label>
+          <label class="slider">Lead line height (mm) <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Total height of the lead lines.">?</button> <output id="cameHOut"></output><input type="range" id="cameH" min="0.8" max="5" step="0.1" /></label>
           <label class="slider">Glass thickness (mm) <output id="paneTOut"></output><input type="range" id="paneT" min="0.2" max="2" step="0.1" /></label>
           <label class="slider">Border (mm) <output id="borderOut"></output><input type="range" id="border" min="0" max="15" step="0.5" /></label>
-          <label class="check"><input type="checkbox" id="mirror" /> Mirror for face-down printing (recommended)</label>
+          <label class="check"><input type="checkbox" id="mirror" /> Mirror for face-down printing <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Recommended. The side on the bed is the front, so mirroring makes the image read the right way round from that side.">?</button></label>
         </section>
 
         <section>
-          <h2>5. Download</h2>
+          <h2>5. Download <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Glass sits in the first layers on the bed, and that side is the front. In your slicer, assign one filament per part.">?</button></h2>
           <div class="downloads">
             <button type="button" id="dl3mf" class="primary" disabled>3MF (multi-color)</button>
             <button type="button" id="dlStl" class="secondary" disabled>STLs (zip)</button>
             <button type="button" id="dlSvg" class="secondary" disabled>SVG design</button>
           </div>
-          <p class="hint">Glass sits in the first layers on the bed; that side is the front. Assign one filament per part in your slicer.</p>
         </section>
       </aside>
 
@@ -106,7 +105,7 @@
     </main>
 
     <footer class="foot">
-      <span>Translucent PETG recommended. Glass color on screen is only a guide; print a small test first.</span>
+      <span>Translucent PETG recommended. <button type="button" class="tip" aria-label="More info" aria-expanded="false" data-tip="Glass colors on screen are only a guide. Print a small test first.">?</button></span>
     </footer>
 
     <script type="module" src="/src/main.ts"></script>
