@@ -107,6 +107,7 @@ async function loadFile(file: File) {
     bmp.close();
     baseName = file.name.replace(/\.[^.]+$/, '').replace(/[^\w-]+/g, '-').slice(0, 40) || 'stained-glass';
     $('dropText').textContent = file.name;
+    $('drop').title = file.name;
     setSource(c);
   } catch {
     setStatus('Could not read that image. Try a PNG or JPG.');
