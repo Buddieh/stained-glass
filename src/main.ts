@@ -4,6 +4,7 @@ import { Viewer } from './viewer';
 import { build3mf } from './export/threemf';
 import { stlZip } from './export/stl';
 import { buildSvg } from './export/svg';
+import { tipHTML } from './tip';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const BED_MM = 256; // Bambu Lab P1S / X1 / A1 build plate
@@ -72,10 +73,10 @@ function syncSize() {
   heightIn.value = String(params.heightMm);
   const hint = $('sizeHint');
   if (params.widthMm > BED_MM || params.heightMm > BED_MM) {
-    hint.textContent = `Larger than a 256 × 256 mm bed. Fine for the preview, but it won't fit a P1S in one piece.`;
+    hint.innerHTML = `Bigger than a ${BED_MM} × ${BED_MM} mm bed. ` + tipHTML("Fine for the preview, but it won't fit a P1S in one piece.");
     hint.classList.add('warn');
   } else {
-    hint.textContent = 'Drag on the image to crop. The aspect ratio follows the crop.';
+    hint.textContent = '';
     hint.classList.remove('warn');
   }
 }
